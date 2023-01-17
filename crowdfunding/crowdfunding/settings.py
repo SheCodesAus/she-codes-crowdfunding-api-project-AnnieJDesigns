@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'projects.apps.ProjectsConfig',
+    'users.apps.UsersConfig', #when you add the users you have add it in the global settings here.
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+AUTH_USER_MODEL = "users.CustomUser" #you need a different model for authentication
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
