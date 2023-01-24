@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'projects.apps.ProjectsConfig',
+    'rest_framework.authtoken',
     'users.apps.UsersConfig', #when you add the users you have add it in the global settings here.
     'rest_framework',
     'django.contrib.admin',
@@ -41,7 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 AUTH_USER_MODEL = "users.CustomUser" #you need a different model for authentication
 
 MIDDLEWARE = [
