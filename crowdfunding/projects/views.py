@@ -5,7 +5,33 @@ from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSeria
 from django.http import Http404
 from rest_framework import status, generics, permissions
 from .permissions import IsOwnerOrReadOnly
+from django.shortcuts import get_object_or_404
 
+# class CauseList(APIView):
+#      permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#      def get(self, request):
+#          causes = Cause.objects.all()
+#          serializer = CauseSerializer(causes, many=True)
+#          return Response(serializer.data)
+     
+# class CauseDetail(APIView):
+#     permission_classes = [
+#         permissions.IsAuthenticatedOrReadOnly,
+#         IsOwnerOrReadOnly
+#      ]
+
+#     def get_object(self,pk):
+#          try:
+#              causes = Cause.objects.get(pk=pk)
+#              self.check_object_permissions(self.request, causes)
+#              return Cause.objects.get(pk=pk)
+#          except Cause.DoesNotExist:
+#              raise Http404
+        
+#     def get(self, request, pk):
+#         causes = self.get_object(pk)
+#         serializer = CauseSerializer(causes)
+#         return Response(serializer.data)
 
 class ProjectList(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -64,4 +90,19 @@ class PledgeList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
+
+
+class Liked(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self, request, pk):
+        project = get_object_or_404(Project, pk=pk)
+        if project.liked_by.filter(username=request.user.username).exists():
+            project.liked_by.remove(request.user)
+        else:
+            project.liked_by.add(request.user)
+        serializer = ProjectSerializer(instance=project)
+        return Response(serializer.data)
     
+
+
+
