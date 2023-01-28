@@ -27,8 +27,10 @@ class Project(models.Model):
         related_name = 'owner_projects' #this is so we add this to user's who made the project
     ) #user has to be a number so that we can reference them in the user data schema
 # Create your models here.
+    @property #is the coolest decorator-modifies function. 'treat it as a field on the class'. it chanegs it to be a field. notice that total_likes is blue for a field
+    def total_likes(self):
+        return self.liked_by.aggregate(count=models.Count('id'))['count']
 
-    
 class Pledge(models.Model):
     amount = models.IntegerField()
     comment = models.CharField(max_length=200)
