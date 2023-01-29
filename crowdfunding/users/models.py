@@ -3,7 +3,9 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     about = models.CharField(max_length=200, blank=True, default='')
+    charity_name = models.CharField(max_length=200, blank=True, default='')
     charity_abn = models.IntegerField(blank=True, default=0)
+    
     
 
 def __str__(self):

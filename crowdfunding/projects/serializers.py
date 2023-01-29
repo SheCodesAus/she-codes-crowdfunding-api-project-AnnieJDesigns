@@ -19,6 +19,13 @@ class PledgeSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Pledge.objects.create(**validated_data)
 
+class PledgeDetailSerializer(PledgeSerializer):
+    
+    def update(self, instance, validated_data):
+        instance.comment = validated_data.get('comment', instance.comment)
+        instance.save()
+        return instance
+
 
 class ProjectSerializer(serializers.Serializer):
     id = serializers.ReadOnlyField()
@@ -27,7 +34,7 @@ class ProjectSerializer(serializers.Serializer):
     goal = serializers.IntegerField()
     cause = serializers.ChoiceField(choices=Project.CAUSE_CHOICE)
     total_likes = serializers.IntegerField(read_only=True)
-    total_pledges = serializers.IntegerField(read_only=True)
+    total_pledges = serializers.ReadOnlyField()
     image = serializers.URLField()
     is_open = serializers.BooleanField()
     date_created = serializers.DateTimeField(read_only=True)
@@ -39,8 +46,6 @@ class ProjectSerializer(serializers.Serializer):
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
     liked_by = CustomUserSerializer(many=True, read_only=True)
-
-    
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)

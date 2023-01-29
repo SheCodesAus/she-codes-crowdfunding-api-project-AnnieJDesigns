@@ -26,10 +26,13 @@ class Project(models.Model):
         on_delete = models.CASCADE,
         related_name = 'owner_projects' #this is so we add this to user's who made the project
     ) #user has to be a number so that we can reference them in the user data schema
-# Create your models here.
-    @property #is the coolest decorator-modifies function. 'treat it as a field on the class'. it chanegs it to be a field. notice that total_likes is blue for a field
+    @property #modifies function. 'treat it as a field on the class'. it changes it to be a field. notice that total_likes is blue for a field
     def total_likes(self):
         return self.liked_by.aggregate(count=models.Count('id'))['count']
+    @property
+    def total_pledges(self):
+        return self.pledges.aggregate(sum=models.Sum('amount'))['sum']
+
 
 class Pledge(models.Model):
     amount = models.IntegerField()
@@ -45,6 +48,8 @@ class Pledge(models.Model):
         on_delete=models.CASCADE,
         related_name='supporter_pledges'
     )
+
+    
 
 # class Comments(models.Model):
 #     comment = models.CharField(max_length=20)
