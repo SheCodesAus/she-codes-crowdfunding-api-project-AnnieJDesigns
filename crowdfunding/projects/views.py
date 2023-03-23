@@ -85,8 +85,11 @@ class ProjectDetail(APIView):
             return Response(serializer.data)
 
 class PledgeList(generics.ListCreateAPIView):
+
     queryset = Pledge.objects.all()
     serializer_class = PledgeSerializer
+
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
