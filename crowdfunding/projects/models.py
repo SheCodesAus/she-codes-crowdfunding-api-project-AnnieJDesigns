@@ -5,7 +5,7 @@ User = get_user_model()
 
 
 class Project(models.Model):
-    title=models.CharField(max_length=200)
+    title=models.CharField(max_length=100)
     description=models.TextField()
     goal=models.IntegerField()
     CAUSE_CHOICE = (
