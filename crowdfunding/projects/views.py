@@ -65,7 +65,7 @@ class ProjectDetail(APIView):
             self.check_object_permissions(self.request, project)
             return Project.objects.get(pk=pk)
         except Project.DoesNotExist:
-            raise Http404 #this is called a end point
+            raise Http404 
 
     def get(self, request, pk):
         project = self.get_object(pk)
@@ -111,6 +111,3 @@ class Liked(APIView):
         serializer = ProjectSerializer(instance=project)
         return Response(serializer.data)
     
-
-
-
