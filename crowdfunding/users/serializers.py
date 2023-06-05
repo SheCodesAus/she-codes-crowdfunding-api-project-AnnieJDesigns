@@ -12,4 +12,4 @@ class CustomUserSerializer(serializers.Serializer):
     
 
     def create(self,validated_data):
-        return CustomUser.objects.create_user(**validated_data)
+        return CustomUser.objects.create(**validated_data)
